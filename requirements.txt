@@ -1,0 +1,44 @@
+# Core ML dependencies
+ipykernel
+pandas
+numpy
+matplotlib
+plotly
+seaborn
+scipy
+scikit-learn
+imblearn
+xgboost
+catboost
+
+# Database and cloud storage
+pymongo
+boto3
+mypy-boto3-s3
+botocore
+
+# Web framework
+fastapi
+uvicorn
+jinja2
+python-multipart
+
+# MLOps and utilities
+evidently==0.2.8
+dill
+PyYAML
+neuro_mf
+from_root
+
+# GCP specific dependencies
+google-cloud-logging
+google-cloud-storage
+google-cloud-secret-manager
+
+# Development and testing
+pytest
+pytest-asyncio
+httpx
+
+# Local development
+-e . 
