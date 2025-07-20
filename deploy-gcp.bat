@@ -48,9 +48,6 @@ echo 1. Copy the content of key.json to GitHub secret GCP_SA_KEY
 echo 2. Add other required secrets to GitHub:
 echo    - GCP_PROJECT_ID: %PROJECT_ID%
 echo    - MONGODB_URL: your-mongodb-connection-string
-echo    - AWS_ACCESS_KEY_ID: your-aws-access-key
-echo    - AWS_SECRET_ACCESS_KEY: your-aws-secret-key
-echo    - AWS_DEFAULT_REGION: your-aws-region
 echo.
 echo 3. Push your code to GitHub main branch to trigger deployment
 echo.

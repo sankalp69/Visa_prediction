@@ -3,9 +3,7 @@ entrypoint: uvicorn app:app --host 0.0.0.0 --port $PORT
 
 env_variables:
   MONGODB_URL: "your-mongodb-url"
-  AWS_ACCESS_KEY_ID: "your-aws-access-key"
-  AWS_SECRET_ACCESS_KEY: "your-aws-secret-key"
-  AWS_DEFAULT_REGION: "us-east-1"
+  GCP_PROJECT_ID: "your-gcp-project-id"
 
 automatic_scaling:
   target_cpu_utilization: 0.6

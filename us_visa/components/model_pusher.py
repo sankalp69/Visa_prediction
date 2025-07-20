@@ -1,49 +1,51 @@
-import sys
-
+import os, sys
 from us_visa.cloud_storage.aws_storage import SimpleStorageService
-from us_visa.exception import USvisaException
-from us_visa.logger import logging
 from us_visa.entity.artifact_entity import ModelPusherArtifact, ModelEvaluationArtifact
 from us_visa.entity.config_entity import ModelPusherConfig
-from us_visa.entity.s3_estimator import USvisaEstimator
-
+from us_visa.exception import USvisaException
+from us_visa.logger import logging
+from us_visa.constants import MODEL_PUSHER_GCS_KEY
 
 class ModelPusher:
+    """
+    This class is responsible for pushing the trained model to Google Cloud Storage
+    """
+    
     def __init__(self, model_evaluation_artifact: ModelEvaluationArtifact,
                  model_pusher_config: ModelPusherConfig):
-        """
-        :param model_evaluation_artifact: Output reference of data evaluation artifact stage
-        :param model_pusher_config: Configuration for model pusher
-        """
-        self.s3 = SimpleStorageService()
         self.model_evaluation_artifact = model_evaluation_artifact
         self.model_pusher_config = model_pusher_config
-        self.usvisa_estimator = USvisaEstimator(bucket_name=model_pusher_config.bucket_name,
-                                model_path=model_pusher_config.s3_model_key_path)
-
+        self.storage = SimpleStorageService()
+        
     def initiate_model_pusher(self) -> ModelPusherArtifact:
         """
-        Method Name :   initiate_model_evaluation
-        Description :   This function is used to initiate all steps of the model pusher
-        
-        Output      :   Returns model evaluation artifact
-        On Failure  :   Write an exception log and then raise an exception
+        This method is responsible for pushing the model to Google Cloud Storage
         """
-        logging.info("Entered initiate_model_pusher method of ModelTrainer class")
-
         try:
-            logging.info("Uploading artifacts folder to s3 bucket")
-
-            self.usvisa_estimator.save_model(from_file=self.model_evaluation_artifact.trained_model_path)
-
-
-            model_pusher_artifact = ModelPusherArtifact(bucket_name=self.model_pusher_config.bucket_name,
-                                                        s3_model_path=self.model_pusher_config.s3_model_key_path)
-
-            logging.info("Uploaded artifacts folder to s3 bucket")
-            logging.info(f"Model pusher artifact: [{model_pusher_artifact}]")
-            logging.info("Exited initiate_model_pusher method of ModelTrainer class")
+            logging.info("Entered initiate_model_pusher method of ModelPusher class")
+            
+            # Push model to GCS
+            self.storage.upload_file(
+                from_filename=self.model_evaluation_artifact.export_model_path,
+                to_filename=f"{MODEL_PUSHER_GCS_KEY}/model.pkl"
+            )
+            
+            # Push preprocessing object to GCS
+            self.storage.upload_file(
+                from_filename=self.model_evaluation_artifact.export_preprocessor_path,
+                to_filename=f"{MODEL_PUSHER_GCS_KEY}/preprocessor.pkl"
+            )
+            
+            model_pusher_artifact = ModelPusherArtifact(
+                is_model_pushed=True,
+                export_model_file_path=f"{MODEL_PUSHER_GCS_KEY}/model.pkl",
+                export_preprocessor_file_path=f"{MODEL_PUSHER_GCS_KEY}/preprocessor.pkl"
+            )
+            
+            logging.info("Model pushed to Google Cloud Storage successfully")
+            logging.info("Exited initiate_model_pusher method of ModelPusher class")
             
             return model_pusher_artifact
+            
         except Exception as e:
-            raise USvisaException(e, sys) from e
+            raise USvisaException(e, sys)

@@ -51,9 +51,6 @@ Add the following secrets to your GitHub repository:
 1. **GCP_PROJECT_ID**: Your GCP project ID
 2. **GCP_SA_KEY**: The entire content of the `key.json` file (base64 encoded)
 3. **MONGODB_URL**: Your MongoDB connection string
-4. **AWS_ACCESS_KEY_ID**: Your AWS access key
-5. **AWS_SECRET_ACCESS_KEY**: Your AWS secret key
-6. **AWS_DEFAULT_REGION**: Your AWS region (e.g., us-east-1)
 
 ## 🏗️ Deployment Options
 
@@ -77,8 +74,6 @@ Add the following secrets to your GitHub repository:
 project_id = "your-project-id"
 region = "us-central1"
 mongodb_url = "your-mongodb-url"
-aws_access_key_id = "your-aws-key"
-aws_secret_access_key = "your-aws-secret"
 github_owner = "your-github-username"
 github_repo = "your-repo-name"
 ```

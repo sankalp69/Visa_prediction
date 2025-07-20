@@ -73,9 +73,7 @@ jobs:
             --cpu 1 \
             --max-instances 10 \
             --set-env-vars="MONGODB_URL=${{ secrets.MONGODB_URL }}" \
-            --set-env-vars="AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            --set-env-vars="AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            --set-env-vars="AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}"
+            --set-env-vars="GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}"
 
       - name: Show service URL
         run: |

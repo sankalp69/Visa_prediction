@@ -5,62 +5,35 @@ import sys
 from pandas import DataFrame
 
 
-class USvisaEstimator:
+class GCSEstimator:
     """
-    This class is used to save and retrieve us_visas model in s3 bucket and to do prediction
+    This class is responsible for storing and retrieving model artifacts from Google Cloud Storage
     """
-
-    def __init__(self,bucket_name,model_path,):
-        """
-        :param bucket_name: Name of your model bucket
-        :param model_path: Location of your model in bucket
-        """
+    
+    def __init__(self, bucket_name: str, model_path: str):
         self.bucket_name = bucket_name
-        self.s3 = SimpleStorageService()
         self.model_path = model_path
-        self.loaded_model:USvisaModel=None
-
-
-    def is_model_present(self,model_path):
-        try:
-            return self.s3.s3_key_path_available(bucket_name=self.bucket_name, s3_key=model_path)
-        except USvisaException as e:
-            print(e)
-            return False
-
-    def load_model(self,)->USvisaModel:
+        self.storage = SimpleStorageService()
+        
+    def save_model(self, model, model_name: str):
         """
-        Load the model from the model_path
-        :return:
-        """
-
-        return self.s3.load_model(self.model_path,bucket_name=self.bucket_name)
-
-    def save_model(self,from_file,remove:bool=False)->None:
-        """
-        Save the model to the model_path
-        :param from_file: Your local system model path
-        :param remove: By default it is false that mean you will have your model locally available in your system folder
-        :return:
+        Save model to Google Cloud Storage
         """
         try:
-            self.s3.upload_file(from_file,
-                                to_filename=self.model_path,
-                                bucket_name=self.bucket_name,
-                                remove=remove
-                                )
+            model_file_path = f"{self.model_path}/{model_name}"
+            self.storage.upload_file(model, model_file_path)
+            return True
         except Exception as e:
-            raise USvisaException(e, sys)
-
-
-    def predict(self,dataframe:DataFrame):
+            raise e
+    
+    def load_model(self, model_name: str):
         """
-        :param dataframe:
-        :return:
+        Load model from Google Cloud Storage
         """
         try:
-            if self.loaded_model is None:
-                self.loaded_model = self.load_model()
-            return self.loaded_model.predict(dataframe=dataframe)
+            model_file_path = f"{self.model_path}/{model_name}"
+            local_path = f"/tmp/{model_name}"
+            self.storage.download_file(model_file_path, local_path)
+            return local_path
         except Exception as e:
-            raise USvisaException(e, sys)
+            raise e

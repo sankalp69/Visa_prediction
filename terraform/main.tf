@@ -56,18 +56,8 @@ resource "google_cloud_run_service" "us_visa_service" {
         }
         
         env {
-          name  = "AWS_ACCESS_KEY_ID"
-          value = var.aws_access_key_id
-        }
-        
-        env {
-          name  = "AWS_SECRET_ACCESS_KEY"
-          value = var.aws_secret_access_key
-        }
-        
-        env {
-          name  = "AWS_DEFAULT_REGION"
-          value = var.aws_default_region
+          name  = "GCP_PROJECT_ID"
+          value = var.project_id
         }
       }
     }
@@ -104,9 +94,7 @@ resource "google_cloudbuild_trigger" "build_trigger" {
   filename = "cloudbuild.yaml"
   
   substitutions = {
-    _MONGODB_URL         = var.mongodb_url
-    _AWS_ACCESS_KEY_ID   = var.aws_access_key_id
-    _AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key
-    _AWS_DEFAULT_REGION  = var.aws_default_region
+    _MONGODB_URL    = var.mongodb_url
+    _GCP_PROJECT_ID = var.project_id
   }
 } 

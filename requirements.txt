@@ -13,9 +13,9 @@ catboost
 
 # Database and cloud storage
 pymongo
-boto3
-mypy-boto3-s3
-botocore
+google-cloud-storage
+google-cloud-logging
+google-cloud-secret-manager
 
 # Web framework
 fastapi
@@ -29,11 +29,6 @@ dill
 PyYAML
 neuro_mf
 from_root
-
-# GCP specific dependencies
-google-cloud-logging
-google-cloud-storage
-google-cloud-secret-manager
 
 # Development and testing
 pytest

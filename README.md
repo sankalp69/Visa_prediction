@@ -49,59 +49,53 @@ pip install -r requirements.txt
 ### Export the  environment variable
 ```bash
 
-
 export MONGODB_URL="mongodb+srv://<username>:<password>...."
 
-export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
-
-export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
-
+export GCP_PROJECT_ID="your-gcp-project-id"
 
 ```
 
 
-# AWS-CICD-Deployment-with-Github-Actions
+# Google-Cloud-CICD-Deployment-with-Github-Actions
 
-## 1. Login to AWS console.
+## 1. Login to Google Cloud Console.
 
 ## 2. Create IAM user for deployment
 
 	#with specific access
 
-	1. EC2 access : It is virtual machine
+	1. Cloud Run: It is serverless container platform
 
-	2. ECR: Elastic Container registry to save your docker image in aws
+	2. Container Registry: To save your docker image in GCP
 
 
 	#Description: About the deployment
 
 	1. Build docker image of the source code
 
-	2. Push your docker image to ECR
+	2. Push your docker image to Container Registry
 
-	3. Launch Your EC2 
+	3. Deploy to Cloud Run
 
-	4. Pull Your image from ECR in EC2
-
-	5. Lauch your docker image in EC2
+	4. Lauch your docker image in Cloud Run
 
 	#Policy:
 
-	1. AmazonEC2ContainerRegistryFullAccess
+	1. Cloud Run Admin
 
-	2. AmazonEC2FullAccess
-
-	
-## 3. Create ECR repo to store/save docker image
-    - Save the URI: 315865595366.dkr.ecr.us-east-1.amazonaws.com/visarepo
+	2. Storage Admin
 
 	
-## 4. Create EC2 machine (Ubuntu) 
+## 3. Create Container Registry repo to store/save docker image
+    - Save the URI: gcr.io/YOUR_PROJECT_ID/us-visa-app
 
-## 5. Open EC2 and Install docker in EC2 Machine:
+	
+## 4. Create Cloud Run service
+
+## 5. Open Cloud Run and Install docker in local Machine:
 	
 	
-	#optinal
+	#optional
 
 	sudo apt-get update -y
 
@@ -117,16 +111,14 @@ export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
 
 	newgrp docker
 	
-# 6. Configure EC2 as self-hosted runner:
-    setting>actions>runner>new self hosted runner> choose os> then run command one by one
-
+# 6. Configure GitHub Actions:
+    Go to repository settings > Secrets and variables > Actions > Add secrets
 
 # 7. Setup github secrets:
 
-   - AWS_ACCESS_KEY_ID
-   - AWS_SECRET_ACCESS_KEY
-   - AWS_DEFAULT_REGION
-   - ECR_REPO
+   - GCP_PROJECT_ID
+   - GCP_SA_KEY
+   - MONGODB_URL
 
     
 
